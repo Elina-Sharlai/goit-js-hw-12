@@ -3,19 +3,29 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const gallery = document.querySelector('.gallery');
 
-export default function renderContent(data) {
-    const markup = data
-        .map(
-            ({
-                webformatURL,
-                largeImageURL,
-                tags,
-                likes,
-                views,
-                comments,
-                downloads,
-            }) => {
-                return `<li class="img-card">
+let galleryBox = new SimpleLightbox('.gallery a', {
+	captionsData: 'alt',
+	captionPosition: 'bottom',
+	captionDelay: 250,
+});
+
+galleryBox.on('error.simplelightbox', function (e) {
+	console.log(e);
+});
+
+export function renderContent(data) {
+	const markup = data
+		.map(
+			({
+				webformatURL,
+				largeImageURL,
+				tags,
+				likes,
+				views,
+				comments,
+				downloads,
+			}) => {
+				return `<li class="img-card">
 				<a href="${largeImageURL}">
 					<img
 						class="img"
@@ -46,24 +56,11 @@ export default function renderContent(data) {
 					</div>
 				</a>
       </li>`;
-            }
-        )
-        .join('');
+			}
+		)
+		.join('');
 
-    gallery.innerHTML = markup;
-    initLightBox();
-}
+	gallery.insertAdjacentHTML('beforeend', markup);
 
-function initLightBox() {
-    let galleryBox = new SimpleLightbox('.gallery a', {
-        captionsData: 'alt',
-        captionPosition: 'bottom',
-        captionDelay: 250,
-    });
-
-    galleryBox.refresh();
-
-    galleryBox.on('error.simplelightbox', function (e) {
-        console.log(e);
-    });
+	galleryBox.refresh();
 }

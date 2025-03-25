@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-import moduleName from './render-functions';
-
 const API_KEY = '49463022-6605d945f5c005b9dcffc2690';
 
 axios.defaults.baseURL = 'https://pixabay.com/api/';
@@ -12,23 +10,14 @@ axios.defaults.params = {
     safesearch: true,
 };
 
-export default function getPhotos(query) {
-    return axios
-        .get('', {
-            params: {
-                q: query,
-            },
-        })
-        .then(res => {
-            if (res.data.hits.length < 1) {
-                throw new Error(
-                    'Sorry, there are no images matching your search query. Please try again!'
-                );
-            }
+export default async function getPhotos(query, limit, page) {
+    const result = await axios.get('', {
+        params: {
+            q: query,
+            per_page: limit,
+            page: page,
+        },
+    });
 
-            return res.data.hits;
-        })
-        .catch(e => {
-            throw new Error(e.message);
-        });
+    return result.data;
 }

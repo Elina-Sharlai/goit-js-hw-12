@@ -10,6 +10,7 @@
   width: calc((100% - 2 * 24px) / 3);
   max-height: 200px;
   border: 1px solid #808080;
+  border-radius: 5px;
   overflow: hidden;
 
   font-family: 'Montserrat', sans-serif;
@@ -37,8 +38,7 @@
 .data-item {
   text-align: center;
 }
-.data-title {
-}
+
 .data-value {
   line-height: 200%;
 }
