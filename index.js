@@ -1,32 +1,16 @@
-import{a as p,S as w,i as u}from"./assets/vendor-BjRz3xa9.js";(function(){const s=document.createElement("link").relList;if(s&&s.supports&&s.supports("modulepreload"))return;for(const e of document.querySelectorAll('link[rel="modulepreload"]'))o(e);new MutationObserver(e=>{for(const r of e)if(r.type==="childList")for(const l of r.addedNodes)l.tagName==="LINK"&&l.rel==="modulepreload"&&o(l)}).observe(document,{childList:!0,subtree:!0});function a(e){const r={};return e.integrity&&(r.integrity=e.integrity),e.referrerPolicy&&(r.referrerPolicy=e.referrerPolicy),e.crossOrigin==="use-credentials"?r.credentials="include":e.crossOrigin==="anonymous"?r.credentials="omit":r.credentials="same-origin",r}function o(e){if(e.ep)return;e.ep=!0;const r=a(e);fetch(e.href,r)}})();const q="49463022-6605d945f5c005b9dcffc2690";p.defaults.baseURL="https://pixabay.com/api/";p.defaults.params={key:q,image_type:"photo",orientation:"horizontal",safesearch:!0};async function g(t,s,a){return(await p.get("",{params:{q:t,per_page:s,page:a}})).data}const S=document.querySelector(".gallery");let h=new w(".gallery a",{captionsData:"alt",captionPosition:"bottom",captionDelay:250});h.on("error.simplelightbox",function(t){console.log(t)});function y(t){const s=t.map(({webformatURL:a,largeImageURL:o,tags:e,likes:r,views:l,comments:b,downloads:v})=>`<li class="img-card">
-				<a href="${o}">
-					<img
-						class="img"
-						src="${a}"
-						alt="${e}"
-						width="360"
-						height="200"
-					/>
-					<div class="img-data-container">
-						<ul class="data">
-							<li class="data-item">
-								<b class="data-title">Likes</b>
-								<p class="data-value" data-likes>${r}</p>
-							</li>
-							<li class="data-item">
-								<b class="data-title">Views</b>
-								<p class="data-value" data-views>${l}</p>
-							</li>
-							<li class="data-item">
-								<b class="data-title">Comments</b>
-								<p class="data-value" data-comments>${b}</p>
-							</li>
-							<li class="data-item">
-								<b class="data-title">Downloads</b>
-								<p class="data-value" data-downloads>${v}</p>
-							</li>
-						</ul>
-					</div>
-				</a>
-      </li>`).join("");S.insertAdjacentHTML("beforeend",s),h.refresh()}const m=document.querySelector(".form"),n=document.querySelector(".loader"),$=document.querySelector(".gallery"),i=document.querySelector(".load-more-btn");let c=15,d=1,f,L;i.classList.add("hidden");u.settings({position:"topRight"});m.addEventListener("submit",async t=>{t.preventDefault(),$.innerHTML="";const s=m.querySelector(".form-input").value.trim();if(s===""){u.error({message:"Query is not valid!"});return}s!==f&&(f=s,d=1),n.classList.add("start");try{const a=await g(s,c,d);L=a.totalHits,a&&y(a.hits),a.hits.length<c?i.classList.add("hidden"):i.classList.remove("hidden")}catch(a){u.error({message:a.message})}n.classList.remove("start"),m.reset()});i.addEventListener("click",async()=>{i.classList.add("hidden"),n.classList.add("start"),d+=1;try{const t=await g(f,c,d);if(t&&(y(t.hits),O(".img-card",3)),t.hits.length<c?i.classList.add("hidden"):i.classList.remove("hidden"),d>Math.ceil(L/c))return n.classList.remove("start"),u.error({message:"We're sorry, there are no more posts to load"})}catch(t){u.error({message:t.message})}n.classList.remove("start")});function O(t,s){const o=document.querySelector(t).getBoundingClientRect().height;window.scrollBy({top:o*s,behavior:"smooth"})}
+import{a as q,S as v,i as l}from"./assets/vendor-Db2TdIkw.js";(function(){const r=document.createElement("link").relList;if(r&&r.supports&&r.supports("modulepreload"))return;for(const e of document.querySelectorAll('link[rel="modulepreload"]'))n(e);new MutationObserver(e=>{for(const o of e)if(o.type==="childList")for(const i of o.addedNodes)i.tagName==="LINK"&&i.rel==="modulepreload"&&n(i)}).observe(document,{childList:!0,subtree:!0});function s(e){const o={};return e.integrity&&(o.integrity=e.integrity),e.referrerPolicy&&(o.referrerPolicy=e.referrerPolicy),e.crossOrigin==="use-credentials"?o.credentials="include":e.crossOrigin==="anonymous"?o.credentials="omit":o.credentials="same-origin",o}function n(e){if(e.ep)return;e.ep=!0;const o=s(e);fetch(e.href,o)}})();const I="49463022-6605d945f5c005b9dcffc2690";async function y(t,r=1,s=15){const n={key:I,q:t,image_type:"photo",orientation:"horizontal",safesearch:"true",per_page:s,page:r};try{return(await q.get("https://pixabay.com/api/?",{params:n})).data}catch(e){throw console.error(e.message),e}}let f=null;function P(t,r=!1){const s=document.querySelector(".gallery"),n=t.map(({webformatURL:e,largeImageURL:o,tags:i,likes:b,views:w,comments:L,downloads:S})=>`<li class="gallery-item">
+          <a class="gallery-link" href="${o}">
+            <img
+              class="gallery-image"
+              src="${e}"
+              alt="${i}"
+            />
+          </a>
+          <div class="info">
+            <p><b>Likes:</b> ${b}</p>
+            <p><b>Views:</b> ${w}</p>
+            <p><b>Comments:</b> ${L}</p>
+            <p><b>Downloads:</b> ${S}</p>
+          </div>
+        </li>`).join("");r?s.insertAdjacentHTML("beforeend",n):s.innerHTML=n,f?f.refresh():f=new v(".gallery a",{captionsData:"alt",captionDelay:250})}function B(){document.querySelector(".gallery").innerHTML=""}function d(t){const r=document.querySelector("#loadBtn");r.style.display=t?"block":"none"}function a(t){const r=document.querySelector(".loader");r.style.display=t?"inline-block":"none"}function E(){const t=document.querySelector(".gallery .gallery-item");if(t){const{height:r}=t.getBoundingClientRect();window.scrollBy({top:r*2,behavior:"smooth"})}}const p=document.querySelector("#formImg"),$=document.querySelector("#searchImg"),H=document.querySelector("#loadBtn");let u="",c=1;const m=15;let g=0;l.settings({position:"topRight"});function h(t,r=!1){if(t.hits.length===0){l.error({title:"Error",message:"No images found!"});return}P(t.hits,r),g=t.totalHits,c*m>=g?(l.info({title:"Info",message:"We're sorry, but you've reached the end of search results."}),d(!1)):d(!0)}p.addEventListener("submit",async t=>{if(t.preventDefault(),u=$.value.trim(),!u){l.warning({title:"Warning",message:"Please enter a search term!"});return}p.reset(),B(),a(!0),d(!1),c=1,g=0;try{const r=await y(u,c,m);a(!1),h(r)}catch{a(!1),l.error({title:"Error",message:"Something went wrong."})}});H.addEventListener("click",async()=>{c++,a(!0);try{const t=await y(u,c,m);a(!1),h(t,!0),E()}catch{a(!1),l.error({title:"Error",message:"Something went wrong."})}});
 //# sourceMappingURL=index.js.map
