@@ -1,20 +1,11 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-const gallery = document.querySelector('.gallery');
+let lightbox = null;
 
-let galleryBox = new SimpleLightbox('.gallery a', {
-	captionsData: 'alt',
-	captionPosition: 'bottom',
-	captionDelay: 250,
-});
-
-galleryBox.on('error.simplelightbox', function (e) {
-	console.log(e);
-});
-
-export function renderContent(data) {
-	const markup = data
+export function renderGallery(images, append = false) {
+	const gallery = document.querySelector('.gallery');
+	const markup = images
 		.map(
 			({
 				webformatURL,
@@ -24,43 +15,57 @@ export function renderContent(data) {
 				views,
 				comments,
 				downloads,
-			}) => {
-				return `<li class="img-card">
-				<a href="${largeImageURL}">
-					<img
-						class="img"
-						src="${webformatURL}"
-						alt="${tags}"
-						width="360"
-						height="200"
-					/>
-					<div class="img-data-container">
-						<ul class="data">
-							<li class="data-item">
-								<b class="data-title">Likes</b>
-								<p class="data-value" data-likes>${likes}</p>
-							</li>
-							<li class="data-item">
-								<b class="data-title">Views</b>
-								<p class="data-value" data-views>${views}</p>
-							</li>
-							<li class="data-item">
-								<b class="data-title">Comments</b>
-								<p class="data-value" data-comments>${comments}</p>
-							</li>
-							<li class="data-item">
-								<b class="data-title">Downloads</b>
-								<p class="data-value" data-downloads>${downloads}</p>
-							</li>
-						</ul>
-					</div>
-				</a>
-      </li>`;
-			}
+			}) =>
+				`<li class="gallery-item">
+          <a class="gallery-link" href="${largeImageURL}">
+            <img
+              class="gallery-image"
+              src="${webformatURL}"
+              alt="${tags}"
+            />
+          </a>
+          <div class="info">
+            <p><b>Likes:</b> ${likes}</p>
+            <p><b>Views:</b> ${views}</p>
+            <p><b>Comments:</b> ${comments}</p>
+            <p><b>Downloads:</b> ${downloads}</p>
+          </div>
+        </li>`
 		)
 		.join('');
+	if (append) {
+		gallery.insertAdjacentHTML('beforeend', markup);
+	} else {
+		gallery.innerHTML = markup;
+	}
 
-	gallery.insertAdjacentHTML('beforeend', markup);
-
-	galleryBox.refresh();
+	if (!lightbox) {
+		lightbox = new SimpleLightbox('.gallery a', {
+			captionsData: 'alt',
+			captionDelay: 250,
+		});
+	} else {
+		lightbox.refresh();
+	}
+}
+export function clearGallery() {
+	document.querySelector('.gallery').innerHTML = '';
+}
+export function toggleButton(show) {
+	const loadMoreButton = document.querySelector('#loadBtn');
+	loadMoreButton.style.display = show ? 'block' : 'none';
+}
+export function toggleLoader(show) {
+	const loader = document.querySelector('.loader');
+	loader.style.display = show ? 'inline-block' : 'none';
+}
+export function scrollToNewImages() {
+	const firstCard = document.querySelector('.gallery .gallery-item');
+	if (firstCard) {
+		const { height: cardHeight } = firstCard.getBoundingClientRect();
+		window.scrollBy({
+			top: cardHeight * 2,
+			behavior: 'smooth',
+		});
+	}
 }
